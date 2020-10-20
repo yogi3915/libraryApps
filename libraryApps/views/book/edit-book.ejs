@@ -1,0 +1,39 @@
+<%- include('../partial/navBar', { title: "Edit Book" }); %>
+
+
+<div class="container">
+
+    <center><p><h1>Edit Book</h1></p></center>
+
+
+<% if (error) { %>
+    <%  error.forEach(element => { %>
+        <p style="color: red;"><%= element %></p>
+    <% }); %>
+<% }%>
+    
+        <form action="/book/edit/<%= data.id %>" method="POST">
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" class="form-control" name="title" value="<%= data.title %>">
+            </div>
+            <div class="form-group">
+                <label>Released date</label>
+                <input type="date" class="form-control" name="released_date" value="<%= data.getReleaseDate() %>">
+              </div>
+              <div class="form-group">
+                <label>Stock</label>
+                <input type="number" class="form-control" name="stock" value="<%= data.stock %>">
+              </div>
+              <div class="form-group">
+                <label>Author</label>
+                <input type="text" class="form-control" name="author" value="<%= data.author %>">
+              </div>
+
+              <br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+    
+    </div>
+
+<%- include('../partial/footer'); %>

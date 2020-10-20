@@ -1,0 +1,38 @@
+<%- include('../partial/navBar', { title: "User List" }); %>
+
+<div class="container">
+
+    <h1>List User</h1>
+
+    <a href="/user/add">AddUser</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data.forEach(element => { %>
+                <tr>
+                    <td><%= element.username %></td>
+                    <td><%= element.address %></td>
+                    <td><%= element.phone_number %></td>
+                    <td><%= element.email %></td>
+                    <td>
+                        <a href="/user/edit/<%= element.id %>">Edit</a> 
+                        || 
+                        <a href="/user/delete/<%= element.id %>" onclick="return confirm(`Are you sure to delete ?`)">Delete</a>  
+                        || 
+                        <a href="/user/addBook/<%= element.id %>">AddBook</a>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+</div>
+<%- include('../partial/footer'); %>

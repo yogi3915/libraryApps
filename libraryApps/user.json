@@ -1,0 +1,26 @@
+[
+    {
+        "username": "admin",
+        "password": "123456",
+        "address": null,
+        "phone_number": null,
+        "email": "admin@gmail.com",
+        "role": "admin"
+    },
+    {
+        "username": "user",
+        "password": "123456",
+        "address": "Jakarta kembangan-utara",
+        "phone_number": "081234567898",
+        "email": "user@gmail.com",
+        "role": "user"
+    },
+    {
+        "username": "user2",
+        "password": "123456",
+        "address": "Bekasi Bekasi-timur",
+        "phone_number": "08198765432",
+        "email": "user2@gmail.com",
+        "role": "user"
+    }
+]

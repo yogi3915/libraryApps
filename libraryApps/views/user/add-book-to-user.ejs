@@ -1,0 +1,47 @@
+<%- include('../partial/navBar', { title: "User List" }); %>
+
+<div class="container">
+
+
+    <h1><%= user.username %></h1>
+
+    <form action="/user/addBook/<%= user.id %>" method="post">
+    
+        <div class="form-group">
+            <label for="exampleFormControlSelect2">Book List</label>
+            <select multiple class="form-control" id="exampleFormControlSelect2" name="BookId">
+              <% book.forEach(element => { %>
+                <option value="<%= element.id %>"><%= element.title %></option>  
+              <% }); %>
+            </select>
+          </div><br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form> <br>
+
+    <h3>List User Book</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Released Date</th>
+          <th>Author</th>
+          <th>Booking Date</th>
+          <th>Return Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% user.Books.forEach(element => { %>
+          <tr>
+            <td><%= element.title %></td>
+            <td><%= toDateFormat(element.released_date) %></td>
+            <td><%= element.author %></td>
+            <td><%= toDateFormat(element.UserBook.booking_date) %></td>
+            <td><%= toDateFormat(element.UserBook.return_date) %></td>
+          </tr>    
+        <% }); %>
+      </tbody>
+    </table>
+
+</div>
+
+<%- include('../partial/footer'); %>
