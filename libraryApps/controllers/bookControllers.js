@@ -27,23 +27,23 @@ class BookController {
     }
 
 
-    static getAddBook(req, res) {
+    // static getAddBook(req, res) {
 
-        let objData = {
-            title: req.body.title,
-            released_date: req.body.released_date,
-            stock: req.body.stock,
-            author: req.body.author
-        }
-        Book.create(objData)
-        .then(() => {
-            res.redirect("/book")
-        })
-        .catch(err => {
-            // res.send(err)
-            res.redirect(`/book/add/?errors=${err.message}`)
-        })
-    }
+    //     let objData = {
+    //         title: req.body.title,
+    //         released_date: req.body.released_date,
+    //         stock: req.body.stock,
+    //         author: req.body.author
+    //     }
+    //     Book.create(objData)
+    //     .then(() => {
+    //         res.redirect("/book")
+    //     })
+    //     .catch(err => {
+    //         // res.send(err)
+    //         res.redirect(`/book/add/?errors=${err.message}`)
+    //     })
+    // }
 
     static getDeleteBook(req, res) {
         let newId = +req.params.id

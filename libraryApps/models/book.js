@@ -54,6 +54,14 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Author must be input!!"
         }
       }
+    },
+    coverImage: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: "Image must be input!!"
+        }
+      }
     }
   }, {
     sequelize,
