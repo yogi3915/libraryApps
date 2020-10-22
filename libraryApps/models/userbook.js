@@ -16,10 +16,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   UserBook.init({
+  
     UserId: DataTypes.INTEGER,
     BookId: DataTypes.INTEGER,
     return_date: DataTypes.DATE,
-    booking_date: DataTypes.DATE
+    booking_date: DataTypes.DATE,
+    flag_return: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'UserBook',

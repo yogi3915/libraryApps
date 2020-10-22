@@ -1,9 +1,19 @@
 const { Book, User } = require("../models/index")
 
 class BookController {
-    static getHome(req, res) {
-        res.render("home")
+
+    static listBookFromUser(req,res) {
+        Book.findAll({
+            order: [ ['id', 'ASC'] ]
+        })
+        .then(result => {
+            res.render("books-user", { data: result })
+        })
+        .catch(err => {
+            res.send(err)
+        })
     }
+    
 
     static getListBook(req, res) {
         Book.findAll({
@@ -40,7 +50,7 @@ class BookController {
             res.redirect("/book")
         })
         .catch(err => {
-            // res.send(err)
+           
             res.redirect(`/book/add/?errors=${err.message}`)
         })
     }
@@ -72,7 +82,7 @@ class BookController {
         let newId = +req.params.id
         Book.findByPk(newId)
         .then(result => {
-            // console.log(result);
+          
             res.render("./book/edit-book", { data: result, error: errorMessage })
         })
         .catch(err => {
@@ -87,7 +97,8 @@ class BookController {
             title: req.body.title,
             released_date: req.body.released_date,
             stock: req.body.stock,
-            author: req.body.author
+            author: req.body.author,
+            price: +req.body.price
         }
 
         Book.update(objData, {
