@@ -1,5 +1,7 @@
 const { User, Book, UserBook } = require("../models/index")
 const toDateFormat = require("../helper/toDateFormat")
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 class UserController {
 
@@ -8,7 +10,7 @@ class UserController {
             order: [['id', 'ASC']]
         })
         .then(result => {
-            // console.log(JSON.stringify(result, null, 2));
+          
             res.render("./user/list-user", { data: result })
         })
         .catch(err => {
@@ -104,12 +106,13 @@ class UserController {
             include: [Book]
         })
         .then(result => {
-            console.log(JSON.stringify(result, null, 2));
+          
             dataUser = result
             return Book.findAll()
         })
         .then(resultBook => {
-            res.render("./user/add-book-to-user", {user: dataUser, book: resultBook, toDateFormat})
+            
+            res.render("./user/add-book-to-user", {user: dataUser, book: resultBook, toDateFormat, subtotal})
         })
         .catch(err => {
             res.send(err)
@@ -121,11 +124,74 @@ class UserController {
             UserId: +req.params.id,
             BookId: +req.body.BookId,
             return_date: new Date(),
-            booking_date: new Date()
+            booking_date: new Date(),
+            flag_return: false
         }
         UserBook.create(objData)
-        .then(() => {
+        .then(() => {                
+            return Book.decrement('stock', { where: {id : objData.BookId}})
+        })
+        .then(result => {
             res.redirect(`/user/addBook/${+req.params.id}`)
+        })
+        .catch(err => {
+            res.send(err)
+        })
+    }
+
+    static getAddAdminUser(req, res) {
+        res.render("./user/addAdminUser")
+    }
+
+    static postAddAdminUser(req, res) {
+        let objData = {
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password,
+            role: req.body.role
+        }
+        
+        bcrypt.hash(objData.password, saltRounds)
+        .then((hash) => {
+            objData.password = hash
+            return User.create(objData)
+        })
+        .then(() => {
+            res.redirect("/user")
+        })
+        .catch(err => {
+            res.send(err)
+        })
+    }
+
+    static getFlagReturn(req, res) {
+        let usrId = +req.params.userId
+        let bkId = +req.params.bookId
+
+        UserBook.findOne({
+            where: {
+              
+                UserId: usrId,
+                BookId: bkId
+            }
+        })
+        .then(result => {
+
+          return UserBook.update({flag_return : true }, {
+                where: {
+                    UserId: usrId,
+                    BookId: bkId
+                },
+                returning: true
+            })
+        })
+        .then((result) => {
+          
+            return Book.increment("stock", {where: {id: bkId}})
+        })
+        .then((result) => {
+       
+            res.redirect(`/user/addBook/${usrId}`)
         })
         .catch(err => {
             res.send(err)

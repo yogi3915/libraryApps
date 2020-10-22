@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here  
       Book.belongsToMany(models.User, { through: models.UserBook })
+     
     }
 
     getFormatDate() {
@@ -21,6 +22,12 @@ module.exports = (sequelize, DataTypes) => {
     getReleaseDate() {
       return this.released_date.toISOString().split("T")[0]
     }
+
+    static subTotal() {
+      return 
+    }
+
+
   };
   Book.init({
     title: {
@@ -54,8 +61,17 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Author must be input!!"
         }
       }
-    }
-  }, {
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {
+          msg: "Price must be input!!"
+        }
+      }
+    },
+  },
+   {
     sequelize,
     modelName: 'Book',
   });

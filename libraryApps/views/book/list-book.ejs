@@ -13,6 +13,7 @@
                 <th>Released Date</th>
                 <th>Stock</th>
                 <th>Author</th>
+                <th>Price</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -24,6 +25,7 @@
                     <td><%= el.getFormatDate() %></td>
                     <td><%= el.stock %></td>
                     <td><%= el.author %></td>
+                    <td><%= el.price %></td>
                     <td>
                         <a href="/book/edit/<%= el.id %>">Edit</a>
                         || 
