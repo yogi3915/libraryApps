@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Cover</th>
                 <th>Title</th>
                 <th>Released Date</th>
                 <th>Stock</th>
@@ -20,6 +21,7 @@
             <% data.forEach(el => { %>
                 <tr>
                     <td><%= el.id %></td>
+                    <td><img src="uploads/<%= el.coverImage %> " alt="" style="height: 50px;"></td>
                     <td><%= el.title %></td>
                     <td><%= el.getFormatDate() %></td>
                     <td><%= el.stock %></td>
