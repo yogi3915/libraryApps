@@ -18,5 +18,7 @@ router.get("/addBook/:userId/flag_return/:bookId", Controller.getFlagReturn)
 router.get("/addAdminUser", Controller.getAddAdminUser)
 router.post("/addAdminUser", Controller.postAddAdminUser)
 
+router.get("/send-email/:id", Controller.sendEmail)
+
 
 module.exports = router

@@ -2,6 +2,7 @@ const { User, Book, UserBook } = require("../models/index")
 const toDateFormat = require("../helper/toDateFormat")
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const nodemailer = require('nodemailer');
 
 class UserController {
 
@@ -10,7 +11,7 @@ class UserController {
             order: [['id', 'ASC']]
         })
         .then(result => {
-          
+            
             res.render("./user/list-user", { data: result })
         })
         .catch(err => {
@@ -106,13 +107,13 @@ class UserController {
             include: [Book]
         })
         .then(result => {
-          
+            
             dataUser = result
             return Book.findAll()
         })
         .then(resultBook => {
             
-            res.render("./user/add-book-to-user", {user: dataUser, book: resultBook, toDateFormat, subtotal})
+            res.render("./user/add-book-to-user", {user: dataUser, book: resultBook, toDateFormat})
         })
         .catch(err => {
             res.send(err)
@@ -170,7 +171,7 @@ class UserController {
 
         UserBook.findOne({
             where: {
-              
+                
                 UserId: usrId,
                 BookId: bkId
             }
@@ -186,12 +187,57 @@ class UserController {
             })
         })
         .then((result) => {
-          
+            
             return Book.increment("stock", {where: {id: bkId}})
         })
         .then((result) => {
-       
+            
             res.redirect(`/user/addBook/${usrId}`)
+        })
+        .catch(err => {
+            res.send(err)
+        })
+    }
+
+    static sendEmail(req, res) {
+
+        let newId =  +req.params.id
+
+        User.findOne({where: {id: newId}, include: [Book]})
+        .then(result => {
+
+
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'toko.kesusu@gmail.com',
+                    pass: 'tokokesusu123'
+                }
+            });
+
+            let sendText = `Terima kasih sudah datang ke toko peminjaman buku kami,
+            silahkan kembalikan buku sebelum tanggal jatuh tempo,
+            buku yang anda pinjam `
+
+            let dataBuku = result.Books.map(el => {
+                return `judul buku: ${el.title}; price: ${el.price} , `
+            })
+
+            sendText += dataBuku
+
+            let mailOptions = {
+                from: 'toko.kesusu@gmail.com',
+                to: `${result.email}`,
+                subject: 'receipe.noreply',
+                text: `${sendText}`
+            };
+
+            transporter.sendMail(mailOptions, (err, info) => {
+                if (err) throw err;
+                console.log('Email sent: ' + info.response);
+            });
+            res.redirect("/user")
+
         })
         .catch(err => {
             res.send(err)

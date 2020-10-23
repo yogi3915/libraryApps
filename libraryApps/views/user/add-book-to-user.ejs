@@ -57,6 +57,8 @@
         <% data += user.Books[i].price %>
     <% } %>
      <center>Subtotal: Rp <%= data %></center>
+
+     <a href="/user/send-email/<%= user.id %>">Send email</a>
 </div>
 <br><br>
 <%- include('../partial/footer'); %>

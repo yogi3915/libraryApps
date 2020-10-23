@@ -5,7 +5,7 @@ function cekAdmin(req, res, next) {
     }
 
     else if (req.session.role !== "admin") {
-        res.redirect("/book/books-user")
+      next()
 
     } else {
         next()
